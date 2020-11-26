@@ -1,0 +1,92 @@
+<launch>
+	<!-- mavros -->
+
+	<!-- vim: set ft=xml noet : -->
+	<!-- example launch script for ArduPilot based FCU's -->
+	<!--arg name="fcu_url" default="udp://127.0.0.1:14551@14555" /-->
+	<arg name="fcu_url" default="/dev/ttyACM1:57600" />
+	<!--arg name="fcu_url" default="/dev/ttyUSB0:57600" /-->
+	<arg name="gcs_url" default="udp://:14556@192.168.1.110:14550" />
+	<arg name="tgt_system" default="1" />
+	<arg name="tgt_component" default="1" />
+	<arg name="log_output" default="screen" />
+	<arg name="fcu_protocol" default="v2.0" />
+	<arg name="respawn_mavros" default="false" />
+	<arg name="system_id"/>
+
+	<include file="$(find mavros)/launch/node.launch">
+		<arg name="pluginlists_yaml" value="$(find mavros)/launch/apm_pluginlists.yaml" />
+		<arg name="config_yaml" value="$(find apt_nav)/config/apm_config.yaml" />
+
+		<arg name="fcu_url" value="$(arg fcu_url)" />
+		<arg name="gcs_url" value="$(arg gcs_url)" />
+		<arg name="tgt_system" value="$(arg tgt_system)" />
+		<arg name="tgt_component" value="$(arg tgt_component)" />
+		<arg name="log_output" value="$(arg log_output)" />
+		<arg name="fcu_protocol" value="$(arg fcu_protocol)" />
+		<arg name="respawn_mavros" default="$(arg respawn_mavros)" />
+	</include>
+	
+	<param name="/mavros/conn/timesync_rate" value="0.1"/>
+
+	<!-- Static TF -->
+
+	<node name="static_tf_node" pkg="apt_nav" type="static_tf_node.py" output="screen" />
+
+    <!-- Map server -->
+
+    <arg name="map_file" default="$(find apt_nav)/map_files/6th_floor.yaml"/>
+    <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
+
+	<!-- ydlidar_ros (TG50) -->
+
+	<node name="ydlidar_node"  pkg="ydlidar_ros"  type="ydlidar_node" output="screen" respawn="false" >
+    	<param name="port"         type="string" value="/dev/ydlidar"/>  
+    	<param name="baudrate"         type="int" value="512000"/>  
+    	<param name="frame_id"     type="string" value="base_scan"/>
+    	<param name="resolution_fixed"    type="bool"   value="true"/>
+    	<param name="auto_reconnect"    type="bool"   value="true"/>
+    	<param name="reversion"    type="bool"   value="true"/>
+    	<param name="angle_min"    type="double" value="-180" />
+    	<param name="angle_max"    type="double" value="180" />
+    	<param name="range_min"    type="double" value="0.01" />
+    	<param name="range_max"    type="double" value="52.0" />
+    	<param name="ignore_array" type="string" value="" />
+    	<param name="frequency"    type="double" value="12"/>
+    	<param name="samp_rate"    type="int"    value="20"/>
+    	<param name="isTOFLidar"    type="bool"   value="true"/>
+
+		<remap from="/scan" to="/scan_raw" />
+  	</node>
+
+	<!-- laser_filters -->
+
+	<node pkg="laser_filters" type="scan_to_scan_filter_chain" output="screen" name="laser_filter">
+    	<rosparam command="load" file="$(find apt_nav)/config/scan_filter.yaml" />
+    	<remap from="/scan_filtered" to="/scan" />
+  	</node>
+
+    <!-- rf_2_vision -->
+
+    <node name="rf_2_vision" pkg="apt_nav" type="rf_2_vision.py" output="screen" />
+
+	<!-- rf2o -->
+
+  	<node pkg="rf2o_laser_odometry" type="rf2o_laser_odometry_node" name="rf2o_laser_odometry" output="screen">
+    	<param name="laser_scan_topic" value="/scan"/>        		# topic where the lidar scans are being published
+    	<param name="odom_topic" value="/odom_rf2o" />              # topic where tu publish the odometry estimations
+    	<param name="publish_tf" value="false" />                   # wheter or not to publish the tf::transform (base->odom)
+    	<param name="base_frame_id" value="/base_footprint"/>       # frame_id (tf) of the mobile robot base. A tf transform from the laser_frame to the base_frame is mandatory
+    	<param name="odom_frame_id" value="/odom" />                # frame_id (tf) to publish the odometry estimations    
+    	<param name="init_pose_from_topic" value="" /> 				# (Odom topic) Leave empty to start at point (0,0)
+   	 	<param name="freq" value="10.0"/>                           # Execution frequency. default = 6.0 Hz
+    	<param name="verbose" value="true" />                       # verbose
+  	</node>
+
+	<!-- joy -->
+
+	<param name="joy_node/dev" value="/dev/input/js0" />
+	<node name="joy_node" pkg="joy" type="joy_node" />
+	<node name="joy_2_vel" pkg="apt_nav" type="joy_2_vel.py" output="screen" />
+
+</launch>

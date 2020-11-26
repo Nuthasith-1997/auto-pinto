@@ -1,0 +1,14 @@
+<launch>
+    <node name="move_base" pkg="move_base" type="move_base" respawn="false" output="screen">
+        <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />
+        <rosparam file="$(find apt_nav)/config/navigation/costmap_common_params.yaml" command="load" ns="global_costmap" />
+        <rosparam file="$(find apt_nav)/config/navigation/costmap_common_params.yaml" command="load" ns="local_costmap" />
+        <rosparam file="$(find apt_nav)/config/navigation/local_costmap_params.yaml" command="load" />
+        <rosparam file="$(find apt_nav)/config/navigation/global_costmap_params.yaml" command="load" />
+        <rosparam file="$(find apt_nav)/config/navigation/move_base_params.yaml" command="load" />
+        <rosparam file="$(find apt_nav)/config/navigation/dwa_local_planner_params.yaml" command="load" />
+
+        <remap from="cmd_vel"   to="/mavros/setpoint_velocity/cmd_vel_unstamped" />
+        <remap from="odom"      to="/mavros/local_position/odom" />
+    </node>
+</launch>
