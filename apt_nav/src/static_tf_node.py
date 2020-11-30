@@ -40,7 +40,7 @@ if __name__ == '__main__':
     base_scan = createTf("base_link", "base_scan", 0, 0, 0.208738, 0, 0, 0)
     wheel_left_link = createTf("base_link", "wheel_left_link", -0.09, 0.152, -0.08685, -1.5708, 0, 0)
     wheel_right_link = createTf("base_link", "wheel_right_link", -0.09, -0.152, -0.08685, -1.5708, 0, 0)
-    imu_link = createTf("base_link", "imu_link", 0.185, 0, 0.069, 0, 0, 0)
+    imu_link = createTf("base_link", "imu_link", 0.185, 0.043732, 0.069, 0, 0, 0)
 
     broadcaster.sendTransform([base_link.static_transformStamped,
                                 base_scan.static_transformStamped,
