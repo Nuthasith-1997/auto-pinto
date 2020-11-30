@@ -28,11 +28,6 @@ class joyStick:
             self.check = True
 
         self.vel.linear.x = msg.axes[1] * 0.30
-        self.vel.linear.y = 0.0
-        self.vel.linear.z = 0.0
-
-        self.vel.angular.x = 0.0
-        self.vel.angular.y = 0.0
         self.vel.angular.z = msg.axes[2] * 0.5
 
     def pubVelocities(self):
