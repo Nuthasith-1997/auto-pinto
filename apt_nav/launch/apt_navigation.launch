@@ -1,17 +1,17 @@
 <launch>
-    <!-- rover_init -->
-    <node name="rover_init" pkg="apt_nav" type="rover_init.py" output="screen" />
+	<!-- rover_init -->
+	<node name="rover_init" pkg="apt_nav" type="rover_init.py" output="screen" />
 
-    <!-- AMCL -->
-    <include file="$(find apt_nav)/launch/amcl.launch" />
+	<!-- AMCL -->
+	<include file="$(find apt_nav)/launch/amcl.launch" />
 
-    <!-- gmapping slam -->
-    <!--include file="$(find apt_nav)/launch/gmapping_slam.launch" /-->
+	<!-- gmapping slam -->
+	<!--include file="$(find apt_nav)/launch/gmapping_slam.launch" /-->
 
-    <!-- move_base -->
-    <include file="$(find apt_nav)/launch/move_base.launch" />
+	<!-- move_base -->
+	<include file="$(find apt_nav)/launch/move_base.launch" />
 
-    <!-- rviz -->
-	<node name="rviz" pkg="rviz" type="rviz" args="-d $(find apt_nav)/config/rviz/saved_config_2.rviz" />
+	<!-- rviz -->
+	<!--node name="rviz" pkg="rviz" type="rviz" args="-d $(find apt_nav)/config/rviz/saved_config_2.rviz" /-->
 
 </launch>
