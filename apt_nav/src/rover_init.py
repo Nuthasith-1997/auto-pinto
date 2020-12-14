@@ -56,7 +56,7 @@ class fcuModes:
 		rospy.wait_for_service('/mavros/cmd/set_home')
 		try:
 			setHomeService = rospy.ServiceProxy('/mavros/cmd/set_home', mavros_msgs.srv.CommandHome)
-			current_gps = True
+			current_gps = False
 			yaw = 0.0
 			latitude = 13.736444
 			longtitude = 100.533986
@@ -168,6 +168,8 @@ if __name__ == '__main__':
 	rospy.init_node('rover_init')
 	print "Node 'rover_init' has initialized."
 
+	rate = rospy.Rate(2)
+
 	rover = fcuModes()
 	
 	gp_origin_pub = rospy.Publisher('/mavros/global_position/set_gp_origin', GeoPointStamped, queue_size=1)
@@ -175,17 +177,18 @@ if __name__ == '__main__':
 	rospy.Subscriber('/mavros/state', State, rover.stateCb)
 
 	# Set to use external navigation instead of GPS or use GPS, enable only 1 of them
-	rover.setExtNavMode()
-	print "External navigation parameters are set."
+	#rover.setExtNavMode()
+	#rate.sleep()
+	#print "External navigation parameters are set."
 	#rover.setDefaultNavMode
 
 	# Set global position origin & new home for guided mode
 	gp_origin_pub.publish(rover.global_origin)
+	rate.sleep()
 	print "Global position origin is set."
 	rover.setHome()
+	rate.sleep()
 	print "Home position is set."
-
-	rate = rospy.Rate(2)
 
 	while not rover.state.guided:
 		rover.setGuidedMode()
@@ -207,4 +210,3 @@ if __name__ == '__main__':
 			current_mode = mode
 
 		rate.sleep()
-		
