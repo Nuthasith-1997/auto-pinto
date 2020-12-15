@@ -69,7 +69,7 @@ imu:
 local_position:
   frame_id: "odom"
   tf:
-    send: true
+    send: false
     frame_id: "odom"
     child_frame_id: "base_footprint"
     send_fcu: true
