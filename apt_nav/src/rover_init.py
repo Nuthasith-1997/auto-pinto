@@ -177,9 +177,9 @@ if __name__ == '__main__':
 	rospy.Subscriber('/mavros/state', State, rover.stateCb)
 
 	# Set to use external navigation instead of GPS or use GPS, enable only 1 of them
-	rover.setExtNavMode()
-	rate.sleep()
-	print "External navigation parameters are set."
+	#rover.setExtNavMode()
+	#rate.sleep()
+	#print "External navigation parameters are set."
 	#rover.setDefaultNavMode
 
 	# Set global position origin & new home for guided mode
