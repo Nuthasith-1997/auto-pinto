@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 
 import rospy
+#import tf2_ros
 
-from geometry_msgs.msg import PoseStamped
+from geometry_msgs.msg import PoseStamped #, TransformStamped
 from nav_msgs.msg import Odometry
-from tf.transformations import euler_from_quaternion, quaternion_from_euler
 
 class wheelOdom2Vision:
 	def __init__(self):
@@ -28,24 +28,34 @@ class wheelOdom2Vision:
 		self.vision.pose.orientation.y = 0
 		self.vision.pose.orientation.z = 0
 		self.vision.pose.orientation.w = 1
+		'''
+		self.tf_bc = tf2_ros.TransformBroadcaster()
+		self.tf = geometry_msgs.msg.TransformStamped()
 
+		self.tf.header.seq = self.counter
+		self.tf.header.stamp = rospy.Time.now()
+		self.tf.header.frame_id = 'odom'
+		self.tf.child_frame_id = 'base_footprint'
+		self.tf.transform.translation.x = 0
+		self.tf.transform.translation.y = 0
+		self.tf.transform.translation.z = 0
+		self.tf.transform.rotation.x = 0
+		self.tf.transform.rotation.y = 0
+		self.tf.transform.rotation.z = 0
+		self.tf.transform.rotation.w = 1
+		'''
 	def wo_cb(self, msg):
 		self.vision.header.seq = self.counter
 		self.vision.header.stamp = rospy.Time.now()
-
-		#self.vision.pose.position.x = msg.pose.pose.position.x
-		#self.vision.pose.position.y = msg.pose.pose.position.y
-		#self.vision.pose.position.z = 0
-
-		#self.vision.pose.orientation.x = msg.pose.pose.orientation.x
-		#self.vision.pose.orientation.y = msg.pose.pose.orientation.y
-		#self.vision.pose.orientation.z = msg.pose.pose.orientation.z
-		#self.vision.pose.orientation.w = msg.pose.pose.orientation.w
 		self.vision.pose = msg.pose.pose
-
 		#self.vision.pose.covariance = msg.pose.covariance
-
+		'''
+		self.tf.header.stamp = rospy.Time.now()
+		self.tf.header.seq = self.counter
+		self.tf.transform = msg.pose.pose
+		'''
 		self.pub_vision.publish(self.vision)
+		#self.tf_bc.sendTransform(self.tf)
 		self.counter += 1
 
 if __name__ == '__main__':
