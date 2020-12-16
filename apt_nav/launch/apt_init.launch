@@ -93,4 +93,7 @@
 	<!-- Wheel odometry to vision pose -->
 	<!--node name="wo_2_vision" pkg="apt_nav" type="wo_2_vision.py" /-->
 
+	<!-- Odom filters node -->
+	<node name="odom_filters" pkg="apt_nav" type="odom_filters.py" output="screen" />
+
 </launch>

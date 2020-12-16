@@ -11,8 +11,10 @@ class fcuModes:
 		self.state = State()
 
 		self.global_origin = GeoPointStamped()
-		self.global_origin.header.stamp = rospy.Time.now()
+		self.global_origin.header.stamp.secs = 0
+		self.global_origin.header.stamp.nsecs = 0
 		self.global_origin.header.seq = 0
+		self.global_origin.header.frame_id = ''
 		self.global_origin.position.latitude = 13.736444
 		self.global_origin.position.longitude = 100.533986
 		self.global_origin.position.altitude = 0
@@ -168,7 +170,8 @@ if __name__ == '__main__':
 	rospy.init_node('rover_init')
 	print "Node 'rover_init' has initialized."
 
-	rate = rospy.Rate(2)
+	rate = rospy.Rate(1)
+	rate_2 = rospy.Rate(0.3)
 
 	rover = fcuModes()
 	
@@ -184,7 +187,7 @@ if __name__ == '__main__':
 
 	# Set global position origin & new home for guided mode
 	gp_origin_pub.publish(rover.global_origin)
-	rate.sleep()
+	rate_2.sleep()
 	print "Global position origin is set."
 	rover.setHome()
 	rate.sleep()
