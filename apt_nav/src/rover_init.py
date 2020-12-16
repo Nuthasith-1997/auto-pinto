@@ -10,14 +10,43 @@ class fcuModes:
 	def __init__(self):
 		self.state = State()
 
-		self.global_origin = GeoPointStamped()
-		self.global_origin.header.stamp.secs = 0
-		self.global_origin.header.stamp.nsecs = 0
-		self.global_origin.header.seq = 0
-		self.global_origin.header.frame_id = ''
-		self.global_origin.position.latitude = 13.736444
-		self.global_origin.position.longitude = 100.533986
-		self.global_origin.position.altitude = 0
+	def setEKFOrigin(self):
+		gp_origin_pub = rospy.Publisher('/mavros/global_position/set_gp_origin', GeoPointStamped, queue_size=1, latch = True)
+
+		global_origin = GeoPointStamped()
+		global_origin.header.stamp = rospy.Time.now()
+		global_origin.header.seq = 0
+		global_origin.header.frame_id = ''
+		global_origin.position.latitude = 13.736444
+		global_origin.position.longitude = 100.533986
+		global_origin.position.altitude = 0
+
+		gp_origin_pub.publish(global_origin)
+
+	def setSR(self, sr):
+		rospy.wait_for_service('/mavros/param/set')
+		try:
+			srParamSet = rospy.ServiceProxy('/mavros/param/set', mavros_msgs.srv.ParamSet)
+			valueSet = ParamValue()
+			valueSet.real = sr
+			srParamSet(param_id ="SR0_POSITION", value = valueSet)
+			srParamSet(param_id ="SR1_POSITION", value = valueSet)
+			srParamSet(param_id ="SR2_POSITION", value = valueSet)
+			srParamSet(param_id ="SR3_POSITION", value = valueSet)
+		except rospy.ServiceException as e:
+			print("Service set sr param call faild: {}".format(e))
+
+		rospy.wait_for_service('/mavros/set_stream_rate')
+		try:
+			srService = rospy.ServiceProxy('/mavros/set_stream_rate', mavros_msgs.srv.StreamRate)
+			# http://docs.ros.org/en/hydro/api/mavros/html/srv/StreamRate.html
+			# https://github.com/ArduPilot/ardupilot/issues/10881
+			stream_id = 6
+			message_rate = sr
+			on_off = True
+			srService(stream_id, message_rate, on_off)
+		except rospy.ServiceException as e:
+			print("Service set stream rate call faild: {}".format(e))
 
 	def stateCb(self, msg):
 		self.state = msg
@@ -171,12 +200,10 @@ if __name__ == '__main__':
 	print "Node 'rover_init' has initialized."
 
 	rate = rospy.Rate(1)
-	rate_2 = rospy.Rate(0.3)
 
 	rover = fcuModes()
-	
-	gp_origin_pub = rospy.Publisher('/mavros/global_position/set_gp_origin', GeoPointStamped, queue_size=1)
-	
+	rover.setSR(10)
+
 	rospy.Subscriber('/mavros/state', State, rover.stateCb)
 
 	# Set to use external navigation instead of GPS or use GPS, enable only 1 of them
@@ -186,12 +213,14 @@ if __name__ == '__main__':
 	#rover.setDefaultNavMode
 
 	# Set global position origin & new home for guided mode
-	gp_origin_pub.publish(rover.global_origin)
-	rate_2.sleep()
+	rover.setEKFOrigin()
+	rate.sleep()
 	print "Global position origin is set."
 	rover.setHome()
 	rate.sleep()
 	print "Home position is set."
+
+	rate.sleep()
 
 	while not rover.state.guided:
 		rover.setGuidedMode()
