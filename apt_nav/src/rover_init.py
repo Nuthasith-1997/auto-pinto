@@ -202,7 +202,7 @@ if __name__ == '__main__':
 	rate = rospy.Rate(1)
 
 	rover = fcuModes()
-	rover.setSR(10)
+	rover.setSR(100)
 
 	rospy.Subscriber('/mavros/state', State, rover.stateCb)
 
