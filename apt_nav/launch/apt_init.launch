@@ -96,4 +96,7 @@
 	<!-- Odom filters node -->
 	<node name="odom_filters" pkg="apt_nav" type="odom_filters.py" output="screen" />
 
+	<!-- cmd_vel filter -->
+	<node name="vel_filter" pkg="apt_nav" type="vel_filter.py" output="screen" />
+
 </launch>
