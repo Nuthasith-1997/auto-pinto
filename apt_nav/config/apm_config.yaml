@@ -81,9 +81,9 @@ local_position:
 # None
 
 # safety_area
-safety_area:
-  p1: {x:  1.0, y:  1.0, z:  1.0}
-  p2: {x: -1.0, y: -1.0, z: -1.0}
+#safety_area:
+#  p1: {x:  1.0, y:  1.0, z:  1.0}
+#  p2: {x: -1.0, y: -1.0, z: -1.0}
 
 # setpoint_accel
 setpoint_accel:
@@ -137,22 +137,22 @@ mission:
 ## Currently available orientations:
 #    Check http://wiki.ros.org/mavros/Enumerations
 ##
-distance_sensor:
-  rangefinder_pub:
-    id: 0
-    frame_id: "base_scan"
-    #orientation: PITCH_270 # sended by FCU
-    field_of_view: 0.0  # XXX TODO
-    send_tf: false
-    sensor_position: {x:  0.0, y:  0.0, z:  -0.1}
-  rangefinder_sub:
-    subscriber: true
-    id: 1
-    orientation: PITCH_270  # only that orientation are supported by APM 3.4+
+#distance_sensor:
+#  rangefinder_pub:
+#    id: 0
+#    frame_id: "base_scan"
+#    #orientation: PITCH_270 # sended by FCU
+#    field_of_view: 0.0  # XXX TODO
+#    send_tf: false
+#    sensor_position: {x:  0.0, y:  0.0, z:  -0.1}
+#  rangefinder_sub:
+#    subscriber: false
+#    id: 1
+#    orientation: PITCH_270  # only that orientation are supported by APM 3.4+
 
 # image_pub
-image:
-  frame_id: "px4flow"
+#image:
+#  frame_id: "px4flow"
 
 # fake_gps
 fake_gps:
@@ -185,29 +185,29 @@ fake_gps:
   gps_rate: 5.0           # GPS data publishing rate
 
 # landing_target
-landing_target:
-  listen_lt: false
-  mav_frame: "LOCAL_NED"
-  land_target_type: "VISION_FIDUCIAL"
-  image:
-    width: 640            # [pixels]
-    height: 480
-  camera:
-    fov_x: 2.0071286398   # default: 115 [degrees]
-    fov_y: 2.0071286398
-  tf:
-    send: true
-    listen: false
-    frame_id: "landing_target"
-    child_frame_id: "camera_center"
-    rate_limit: 10.0
-  target_size: {x:  0.3, y:  0.3}
+#landing_target:
+#  listen_lt: false
+#  mav_frame: "LOCAL_NED"
+#  land_target_type: "VISION_FIDUCIAL"
+#  image:
+#    width: 640            # [pixels]
+#    height: 480
+#  camera:
+#    fov_x: 2.0071286398   # default: 115 [degrees]
+#    fov_y: 2.0071286398
+#  tf:
+#    send: true
+#    listen: false
+#    frame_id: "landing_target"
+#    child_frame_id: "camera_center"
+#    rate_limit: 10.0
+#  target_size: {x:  0.3, y:  0.3}
 
 # mocap_pose_estimate
-mocap:
-  # select mocap source
-  use_tf: false   # ~mocap/tf
-  use_pose: true  # ~mocap/pose
+#mocap:
+#  # select mocap source
+#  use_tf: false   # ~mocap/tf
+#  use_pose: true  # ~mocap/pose
 
 # odom
 odometry:
@@ -216,11 +216,11 @@ odometry:
   estimator_type: 3 # check enum MAV_ESTIMATOR_TYPE in <https://mavlink.io/en/messages/common.html>
 
 # px4flow
-px4flow:
-  frame_id: "px4flow"
-  ranger_fov: 0.118682      # 6.8 degrees at 5 meters, 31 degrees at 1 meter
-  ranger_min_range: 0.3     # meters
-  ranger_max_range: 5.0     # meters
+#px4flow:
+#  frame_id: "px4flow"
+#  ranger_fov: 0.118682      # 6.8 degrees at 5 meters, 31 degrees at 1 meter
+#  ranger_min_range: 0.3     # meters
+#  ranger_max_range: 5.0     # meters
 
 # vision_pose_estimate
 vision_pose:

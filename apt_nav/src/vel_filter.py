@@ -10,7 +10,7 @@ class velFilter:
 
 		rospy.Subscriber('/cmd_vel', Twist, self.vel_filters)
 
-		self.pub_filtered_vel = rospy.Publisher('/mavros/setpoint_velocity/cmd_vel_unstamped', Twist, queue_size=5)
+		self.pub_filtered_vel = rospy.Publisher('/mavros/setpoint_velocity/cmd_vel_unstamped', Twist, queue_size=1)
 
 		self.filtered_vel = Twist()
 		self.filtered_vel.linear.x = 0

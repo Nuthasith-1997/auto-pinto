@@ -9,6 +9,7 @@ from geographic_msgs.msg import GeoPointStamped
 class fcuModes:
 	def __init__(self):
 		self.state = State()
+		rospy.Subscriber('/mavros/state', State, rover.stateCb)
 
 	def setEKFOrigin(self):
 		gp_origin_pub = rospy.Publisher('/mavros/global_position/set_gp_origin', GeoPointStamped, queue_size=1, latch = True)
@@ -203,8 +204,6 @@ if __name__ == '__main__':
 
 	rover = fcuModes()
 	rover.setSR(100)
-
-	rospy.Subscriber('/mavros/state', State, rover.stateCb)
 
 	# Set to use external navigation instead of GPS or use GPS, enable only 1 of them
 	#rover.setExtNavMode()
