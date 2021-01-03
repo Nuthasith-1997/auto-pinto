@@ -9,7 +9,7 @@ from geographic_msgs.msg import GeoPointStamped
 class fcuModes:
 	def __init__(self):
 		self.state = State()
-		rospy.Subscriber('/mavros/state', State, rover.stateCb)
+		rospy.Subscriber('/mavros/state', State, self.stateCb)
 
 	def setEKFOrigin(self):
 		gp_origin_pub = rospy.Publisher('/mavros/global_position/set_gp_origin', GeoPointStamped, queue_size=1, latch = True)

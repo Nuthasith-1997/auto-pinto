@@ -91,7 +91,7 @@
 	<node name="joy_2_vel" pkg="apt_nav" type="joy_2_vel.py" output="screen" /-->
 
 	<!-- Wheel odometry to vision pose -->
-	<!--node name="wo_2_vision" pkg="apt_nav" type="wo_2_vision.py" /-->
+	<node name="wo_2_vision" pkg="apt_nav" type="wo_2_vision.py" />
 
 	<!-- Odom filters node -->
 	<node name="odom_filters" pkg="apt_nav" type="odom_filters.py" output="screen" />
