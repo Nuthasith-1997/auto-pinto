@@ -21,7 +21,7 @@ class velFilter:
 		self.filtered_vel.angular.z = 0
 
 	def vel_filters(self, msg):
-		self.filtered_vel.linear.y = msg.linear.x
+		self.filtered_vel.linear.x = msg.linear.x
 		self.filtered_vel.angular.z = msg.angular.z
 		self.pub_filtered_vel.publish(self.filtered_vel)
 
