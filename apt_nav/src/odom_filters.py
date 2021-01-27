@@ -12,6 +12,7 @@ class odomFilters:
 		print "Node 'odom_filters' has initialized."
 
 		rospy.Subscriber('/mavros/local_position/odom', Odometry, self.filter_z)
+		#rospy.Subscriber('/mavros/wheel_odometry/odom', Odometry, self.filter_z)
 
 		self.counter = 0
 

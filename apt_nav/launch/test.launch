@@ -4,7 +4,7 @@
 	<!-- vim: set ft=xml noet : -->
 	<!-- example launch script for ArduPilot based FCU's -->
 	<!--arg name="fcu_url" default="udp://127.0.0.1:14551@14555" /-->
-	<arg name="fcu_url" default="/dev/ttyUSB0:57600" />
+	<arg name="fcu_url" default="/dev/ttyACM0:57600" />
 	<!--arg name="fcu_url" default="/dev/ttyUSB0:57600" /-->
 	<arg name="gcs_url" default="udp://:14556@192.168.43.70:14550" />
 	<arg name="tgt_system" default="1" />
@@ -28,5 +28,18 @@
 	</include>
 	
 	<param name="/mavros/conn/timesync_rate" value="0.1"/>
+
+	<!-- Static TF -->
+
+	<node name="static_tf_node" pkg="apt_nav" type="static_tf_node.py" output="screen" />
+
+	<!-- Wheel odometry to vision pose -->
+	<node name="wo_2_vision" pkg="apt_nav" type="wo_2_vision.py" />
+
+	<!-- Odom filters node -->
+	<node name="odom_filters" pkg="apt_nav" type="odom_filters.py" output="screen" />
+
+	<!-- cmd_vel filter -->
+	<node name="vel_filter" pkg="apt_nav" type="vel_filter.py" output="screen" />
 
 </launch>

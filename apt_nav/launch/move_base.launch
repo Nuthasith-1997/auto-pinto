@@ -15,6 +15,6 @@
 
 		<!--remap from="cmd_vel"   to="/mavros/setpoint_velocity/cmd_vel_unstamped" /-->
 		<!--remap from="odom"      to="/mavros/local_position/odom" /-->
-		<remap from="odom"      to="/mavros/wheel_odometry/odom" />
+		<!--remap from="odom"      to="/mavros/wheel_odometry/odom" /-->
 	</node>
 </launch>
