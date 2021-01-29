@@ -9,7 +9,7 @@
 	<!--include file="$(find apt_nav)/launch/gmapping_slam.launch" /-->
 
 	<!-- move_base -->
-	<include file="$(find apt_nav)/launch/move_base.launch" />
+	<!--include file="$(find apt_nav)/launch/move_base.launch" /-->
 
 	<!-- rviz -->
 	<!--node name="rviz" pkg="rviz" type="rviz" args="-d $(find apt_nav)/config/rviz/saved_config_2.rviz" /-->
